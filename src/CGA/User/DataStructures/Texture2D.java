@@ -1,5 +1,6 @@
 package CGA.User.DataStructures;
 
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 import org.lwjgl.stb.STBImage;
@@ -18,6 +19,7 @@ import static org.lwjgl.opengl.GL30.*;
 /**
  * Created by Fabian on 16.09.2017.
  */
+
 public class Texture2D implements ITexture{
     private int texID;
 
@@ -50,7 +52,10 @@ public class Texture2D implements ITexture{
     }
 
     public void processTexture(ByteBuffer imageData, int width, int height, boolean genMipMaps) throws Exception {
-        //TODO: Place your code here
+        texID=glGenTextures();
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,  width, height,0, format, GL_FLOAT, imageData);
+        //TODO: Review und vervollständigen
+
     }
 
     public void setTexParams(int wrapS, int wrapT, int minFilter, int magFilter) throws Exception {
@@ -65,15 +70,15 @@ public class Texture2D implements ITexture{
     }
 
     public void bind(int textureUnit) {
-        //TODO: Place your code here
+        glBindTexture(textureUnit, texID);
     }
 
     public void unbind() {
-        //TODO: Place your code here
+        glDeleteTextures(texID);
     }
 
     public int getTexID() {
-        //TODO: Place your code here
+        return texID;
     }
 
     public void cleanup() {
