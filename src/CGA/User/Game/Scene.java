@@ -141,14 +141,10 @@ public class Scene {
 
             cam1.setUp(new Vector3f(0,1,0));
 
-            //TODO: ...Projektion Matrix / View Matrix
-
-            OBJLoader.OBJResult objSphere=OBJLoader.loadOBJ("assets/models/sphere.obj",false,false);
-            OBJLoader.OBJResult objGround=OBJLoader.loadOBJ("assets/models/ground.obj",false,false);
-
             //Sphere
-            OBJLoader.OBJResult res= OBJLoader.loadOBJ("assets/models/sphere.obj",false,false);
-            ArrayList <OBJLoader.OBJMesh> objMeshes= res.objects.get(0).meshes;
+            /*
+            OBJLoader.OBJResult objSphere=OBJLoader.loadOBJ("assets/models/sphere.obj",false,false);
+            ArrayList <OBJLoader.OBJMesh> objMeshes= objSphere.objects.get(0).meshes;
 
             ArrayList<Mesh> meshes=new ArrayList<>();
 
@@ -159,11 +155,11 @@ public class Scene {
             cam1.setParent(sphere);
             //Transformation aus 3.2.3
             //sphere.scaleLocal(new Vector3f(0.5f,0.5f,0.5f));
-            //sphere.translateGlobal(new Vector3f(0.5f, 0f, 0f));
+            //sphere.translateGlobal(new Vector3f(0.5f, 0f, 0f));*/
 
             //Ground
-            res= OBJLoader.loadOBJ("assets/models/ground.obj",false,false);
-            objMeshes= res.objects.get(0).meshes;
+            OBJLoader.OBJResult objGround=OBJLoader.loadOBJ("assets/models/ground.obj",false,false);
+            ArrayList <OBJLoader.OBJMesh> objMeshes= objGround.objects.get(0).meshes;
             ArrayList<Mesh> meshes2=new ArrayList<>();
 
             for(OBJLoader.OBJMesh objM:objMeshes){
@@ -206,9 +202,9 @@ public class Scene {
 
         //Uniformieren aus 3.1.2
         /*tronShader.setUniform("model_matrix", modelS, false);
-        sphere.render(); */
+        sphere.render();
 
-        sphere.render(cam1, tronShader);
+        sphere.render(cam1, tronShader);*/
 
         //mesh.render();
 
