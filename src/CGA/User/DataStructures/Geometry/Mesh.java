@@ -1,5 +1,7 @@
 package CGA.User.DataStructures.Geometry;
 
+import CGA.User.DataStructures.ShaderProgram;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 //import static org.lwjgl.opengl.GL15.glDeleteBuffers;
@@ -15,10 +17,8 @@ import static org.lwjgl.opengl.GL20.*;
 public class Mesh {
 
     //private data
-    private int vao ;
-    private int vbo ;
-    private int ibo ;
-    private int count;
+    private int vao,vbo, ibo,count;
+    private Material material;
 
     /**
      * Creates a Mesh object from vertexdata, intexdata and a given set of vertex attributes
@@ -28,7 +28,7 @@ public class Mesh {
      * @param attributes vertex attributes contained in vertex data
      * @throws Exception If the creation of the required OpenGL objects fails, an exception is thrown
      */
-    public Mesh(float[] vertexdata, int[] indexdata, VertexAttribute[] attributes) throws Exception {
+    private Mesh(float[] vertexdata, int[] indexdata, VertexAttribute[] attributes) throws Exception {
         count=indexdata.length;
         vao= glGenVertexArrays();
         glBindVertexArray(vao);
@@ -53,6 +53,38 @@ public class Mesh {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ibo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER,indexdata, GL_STATIC_DRAW);
     }
+    public Mesh(float[] vertexdata, int[] indexdata, VertexAttribute[] attributes, Material material) throws Exception {
+        this.material=material;
+
+        count=indexdata.length;
+
+        vao= glGenVertexArrays();
+        glBindVertexArray(vao);
+
+        vbo= glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER,vbo);
+        glBufferData(GL_ARRAY_BUFFER,vertexdata, GL_STATIC_DRAW);
+
+        if(material.diff!= null){
+            int diffID=material.diff.getTexID();
+        }
+        if(material.emit!=null){
+            int emitID=material.emit.getTexID();
+        }
+        if(material.specular!=null){
+            int specularID= material.specular.getTexID();
+        }
+        //TODO: IDs ans VAO Binden
+
+        for(int i=0; i<attributes.length;i++){
+            glVertexAttribPointer(i,attributes[i].n,attributes[i].type,false,attributes[i].stride,attributes[i].offset);
+            glEnableVertexAttribArray(i);
+        }
+
+        ibo=glGenBuffers();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ibo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,indexdata, GL_STATIC_DRAW);
+    }
 
 
 
@@ -63,8 +95,13 @@ public class Mesh {
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES,count,GL_UNSIGNED_INT,0);
         glBindVertexArray(0);
-        //TODO: Place your code here. Call the rendering method every frame.
 
+    }
+    public void render(ShaderProgram shaderProgram){
+        material.bind(shaderProgram);
+        glBindVertexArray(vao);
+        glDrawElements(GL_TRIANGLES,count,GL_UNSIGNED_INT,0);
+        glBindVertexArray(0);
     }
 
     /**

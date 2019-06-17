@@ -7,6 +7,7 @@ import CGA.User.DataStructures.Geometry.Mesh;
 import CGA.User.DataStructures.Geometry.Renderable;
 import CGA.User.DataStructures.Geometry.VertexAttribute;
 import CGA.User.DataStructures.ShaderProgram;
+import CGA.User.DataStructures.Texture2D;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -23,8 +24,9 @@ import static org.lwjgl.opengles.GLES20.GL_FLOAT;
 public class Scene {
     private ShaderProgram simpleShader, tronShader;
     private Mesh mesh, mesh2;
-    private Matrix4f modelG, modelS;
+    //private Matrix4f modelG, modelS;
     private Renderable sphere, ground;
+    private Texture2D texture;
 
     private GameWindow window;
 
@@ -43,11 +45,12 @@ public class Scene {
             simpleShader = new ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl");
             tronShader = new ShaderProgram("assets/shaders/tron_vert.glsl", "assets/shaders/tron_frag.glsl");
 
-            //Transformationen aus 3.1.1
+            texture=new Texture2D("assets\textures\ground_diff.png", false); //TODO iwie diesen Kack tabulator ignorieren lassen (oder folder umbenennen)
+
+            /*Transformationen aus 3.1.1
             modelG=new Matrix4f().rotateX(90).scale(0.03f);
             modelS=new Matrix4f().scale(0.5f);
-
-            /*FloatBuffer vert= BufferUtils.createFloatBuffer(15);
+            FloatBuffer vert= BufferUtils.createFloatBuffer(15);
             vert.put(-0.5f);vert.put(-0.5f);vert.put(0.0f);
             vert.put(0.5f);vert.put(-0.5f);vert.put(0.0f);
             vert.put(0.5f);vert.put(0.5f);vert.put(0.0f);
@@ -157,13 +160,14 @@ public class Scene {
             //sphere.scaleLocal(new Vector3f(0.5f,0.5f,0.5f));
             //sphere.translateGlobal(new Vector3f(0.5f, 0f, 0f));
 */
+
             //Ground
             OBJLoader.OBJResult objGround=OBJLoader.loadOBJ("assets/models/ground.obj",false,false);
             ArrayList <OBJLoader.OBJMesh>objMeshes= objGround.objects.get(0).meshes;
             ArrayList<Mesh> meshes2=new ArrayList<>();
 
             for(OBJLoader.OBJMesh objM:objMeshes){
-                meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),new VertexAttribute[]{aPos,aTex,aNorm}));
+               // meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),new VertexAttribute[]{aPos,aTex,aNorm}));
             }
             ground = new Renderable(meshes2);
 

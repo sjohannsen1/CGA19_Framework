@@ -36,6 +36,6 @@ public class Material
 
     public void bind(ShaderProgram shaderProgram)
     {
-        //TODO: Place your code here
+        shaderProgram.setUniform("tcMultiplier",0); //TODO 0? Da: Startend bei 0 in a4.2
     }
 }
