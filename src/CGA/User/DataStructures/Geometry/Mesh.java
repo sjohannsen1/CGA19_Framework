@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL15.*;
 //import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengles.GLES20.GL_TEXTURE0;
 
 
 /**
@@ -66,18 +67,18 @@ public class Mesh {
         glBindBuffer(GL_ARRAY_BUFFER,vbo);
         glBufferData(GL_ARRAY_BUFFER,vertexdata, GL_STATIC_DRAW);
 
-        if(material.diff!= null){
+       /* if(material.diff!= null){
             int diffID=material.diff.getTexID();
-            glBindTexture(GL_TEXTURE_2D,diffID);
-        }
+            //glBindTexture(GL_TEXTURE_2D,diffID);
+        }*/
         if(material.emit!=null){
-            int emitID=material.emit.getTexID();
-            glBindTexture(GL_TEXTURE_2D,emitID);
+            //glBindTexture(GL_TEXTURE_2D,emitID);
+            material.emit.bind(GL_TEXTURE0);
         }
-        if(material.specular!=null) {
+        /*if(material.specular!=null) {
             int specularID = material.specular.getTexID();
-            glBindTexture(GL_TEXTURE_2D, specularID);
-        }
+            //glBindTexture(GL_TEXTURE_2D, specularID);
+        }*/
         //TODO: Binding-check!
         // Material übergeben?
 

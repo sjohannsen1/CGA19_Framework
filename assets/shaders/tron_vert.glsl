@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec3 position;
 layout(location = 2) in vec3 normale;
-layout (location=3) in vec2 tc0;
+layout (location=1) in vec2 tc0;
 
 //uniforms
 uniform mat4 model_matrix;

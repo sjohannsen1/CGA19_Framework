@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengles.GLES20.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengles.GLES20.GL_FLOAT;
 
 /**
@@ -52,9 +53,9 @@ public class Scene {
             tSpec =new Texture2D("assets/textures/ground_spec.png", false);
 
             Material mGround= new Material(tDiff, tEmit, tSpec, 60.0f, new Vector2f(64.0f, 64.0f));
-            tDiff.setTexParams(1,1,0,1);
-            tEmit.setTexParams(0,0,0,1);
-            tSpec.setTexParams(1,0,1,1);
+            tDiff.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
+            tEmit.setTexParams(GL_REPEAT,GL_CLAMP_TO_EDGE,GL_NEAREST,GL_NEAREST);
+            tSpec.setTexParams(GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE,GL_LINEAR,GL_NEAREST);
 
             /*Transformationen aus 3.1.1
             modelG=new Matrix4f().rotateX(90).scale(0.03f);
@@ -229,15 +230,15 @@ public class Scene {
 
     public void update(float dt, float t) {
         if(window.getKeyState(GLFW_KEY_W)){
-            sphere.translateGlobal(new Vector3f(0f,0f,-dt));
+            cam1.translateGlobal(new Vector3f(0f,0f,-dt));
 
         }if(window.getKeyState(GLFW_KEY_A)){
-            sphere.rotateLocal(0f,dt,0f);
+            cam1.rotateLocal(0f,dt,0f);
 
         }if(window.getKeyState(GLFW_KEY_S)){
-            sphere.translateGlobal(new Vector3f(0f,0f,dt));
+            cam1.translateGlobal(new Vector3f(0f,0f,dt));
         }if (window.getKeyState(GLFW_KEY_D)){
-            sphere.rotateLocal(0f,-dt,0f);
+            cam1.rotateLocal(0f,-dt,0f);
         }
 
     }
