@@ -3,15 +3,15 @@ package CGA.User.Game;
 import CGA.Framework.GameWindow;
 import CGA.Framework.OBJLoader;
 import CGA.User.DataStructures.Camera.TronCam;
+import CGA.User.DataStructures.Geometry.Material;
 import CGA.User.DataStructures.Geometry.Mesh;
 import CGA.User.DataStructures.Geometry.Renderable;
 import CGA.User.DataStructures.Geometry.VertexAttribute;
 import CGA.User.DataStructures.ShaderProgram;
 import CGA.User.DataStructures.Texture2D;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector2f;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -27,7 +27,7 @@ public class Scene {
     private Mesh mesh, mesh2;
     //private Matrix4f modelG, modelS;
     private Renderable sphere, ground;
-    private Texture2D texture;
+    private Texture2D tDiff, tEmit, tSpec;
 
     private GameWindow window;
 
@@ -46,7 +46,11 @@ public class Scene {
             simpleShader = new ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl");
             tronShader = new ShaderProgram("assets/shaders/tron_vert.glsl", "assets/shaders/tron_frag.glsl");
 
-            texture=new Texture2D("assets/textures/ground_diff.png", false);
+            tDiff =new Texture2D("assets/textures/ground_diff.png", false);
+            tEmit =new Texture2D("assets/textures/ground_emit.png", false);
+            tSpec =new Texture2D("assets/textures/ground_spec.png", false);
+
+            Material mGround= new Material(tDiff, tEmit, tSpec, 60.0f, new Vector2f(64.0f, 64.0f));
 
             /*Transformationen aus 3.1.1
             modelG=new Matrix4f().rotateX(90).scale(0.03f);
