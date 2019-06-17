@@ -45,7 +45,7 @@ public class Scene {
             simpleShader = new ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl");
             tronShader = new ShaderProgram("assets/shaders/tron_vert.glsl", "assets/shaders/tron_frag.glsl");
 
-            texture=new Texture2D("assets\textures\ground_diff.png", false); //TODO iwie diesen Kack tabulator ignorieren lassen (oder folder umbenennen)
+            texture=new Texture2D("assets/textures/ground_diff.png", false); //TODO iwie diesen Kack tabulator ignorieren lassen (oder folder umbenennen)
 
             /*Transformationen aus 3.1.1
             modelG=new Matrix4f().rotateX(90).scale(0.03f);

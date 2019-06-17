@@ -67,12 +67,15 @@ public class Mesh {
 
         if(material.diff!= null){
             int diffID=material.diff.getTexID();
+            glBindTexture(GL_TEXTURE_2D,diffID);
         }
         if(material.emit!=null){
             int emitID=material.emit.getTexID();
+            glBindTexture(GL_TEXTURE_2D,emitID);
         }
         if(material.specular!=null){
             int specularID= material.specular.getTexID();
+            glBindTexture(GL_TEXTURE_2D,specularID);
         }
         //TODO: IDs ans VAO Binden
 
