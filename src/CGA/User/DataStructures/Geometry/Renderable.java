@@ -60,10 +60,10 @@ public class Renderable extends Transformable implements IRenderable
     @Override
     //3.2.3 Implementierung der weiteren Renderfunktion
     public void render(ShaderProgram shaderProgram) {
-        shaderProgram.setUniform("model_matrix", this.getWorldModelMatrix(), false);
+        //shaderProgram.setUniform("model_matrix", this.getWorldModelMatrix(), false);
         for(Mesh m : meshes)
         {
-            m.render();
+            m.render(shaderProgram);
         }
     }
 }

@@ -41,7 +41,6 @@ public class TronCam extends Camera {
         //System.out.println(pos);
         //Matrix4f viewMat = temp.lookAt(eye,pos,up);
         Matrix4f viewMat= temp.lookAt(getWorldPosition(), getWorldPosition().sub(getWorldZAxis()), getWorldYAxis() );
-        System.out.println(viewMat);
         return viewMat;
     }
 

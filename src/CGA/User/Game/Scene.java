@@ -2,6 +2,7 @@ package CGA.User.Game;
 
 import CGA.Framework.GameWindow;
 import CGA.Framework.OBJLoader;
+import CGA.Framework.Vertex;
 import CGA.User.DataStructures.Camera.TronCam;
 import CGA.User.DataStructures.Geometry.Material;
 import CGA.User.DataStructures.Geometry.Mesh;
@@ -51,6 +52,9 @@ public class Scene {
             tSpec =new Texture2D("assets/textures/ground_spec.png", false);
 
             Material mGround= new Material(tDiff, tEmit, tSpec, 60.0f, new Vector2f(64.0f, 64.0f));
+            tDiff.setTexParams(1,1,0,1);
+            tEmit.setTexParams(0,0,0,1);
+            tSpec.setTexParams(1,0,1,1);
 
             /*Transformationen aus 3.1.1
             modelG=new Matrix4f().rotateX(90).scale(0.03f);
@@ -138,10 +142,13 @@ public class Scene {
 
             //Vertex Attributes der Objekte
             VertexAttribute aPos=new VertexAttribute(3,GL_FLOAT,8*4,0); //position
-            VertexAttribute aTex=new VertexAttribute(2, GL_FLOAT,8*4,3*4);//textur
+            VertexAttribute aCol=new VertexAttribute(2, GL_FLOAT,8*4,3*4);//textur
             VertexAttribute aNorm=new VertexAttribute(3,GL_FLOAT,8*4,5*4);//Normale
+            VertexAttribute aTex= new VertexAttribute(2, GL_UNSIGNED_BYTE, 8*4, 8*4); //Texture
 
-            VertexAttribute[] atArray= new VertexAttribute[]{aPos,aTex,aNorm};
+
+
+            VertexAttribute[] atArray= new VertexAttribute[]{aPos,aCol,aNorm};
 
             //Cam
             cam1=new TronCam((float)Math.toRadians(90),16/9f,0.01f,1000);
@@ -172,11 +179,10 @@ public class Scene {
             ArrayList<Mesh> meshes2=new ArrayList<>();
 
             for(OBJLoader.OBJMesh objM:objMeshes){
-               // meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),new VertexAttribute[]{aPos,aTex,aNorm}));
+               meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),new VertexAttribute[]{aPos,aCol,aNorm, aTex}, mGround));
             }
             ground = new Renderable(meshes2);
-            //TODO: Daten einfügen für Boden- richtig in Scene?  Material muss rüber
-            glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,512,512,0,GL_RGBA,GL_FLOAT, Data);
+            //TODO: Daten einfügen für Boden- richtig in Scene?  Material muss rüber -> NEIN ist doch schon in Texture2D
 
             //Transformation aus 3.2.3
             /*gound.rotateLocal(90,0,0);
@@ -207,14 +213,13 @@ public class Scene {
         //Uniformieren aus 3.1.2
         /*tronShader.setUniform("model_matrix", modelG, false);
         ground.render();*/
-
-        ground.render(cam1,tronShader);
+        cam1.bind(tronShader);
+        ground.render(tronShader);
 
         //Uniformieren aus 3.1.2
         /*tronShader.setUniform("model_matrix", modelS, false);
-        sphere.render();*/
-
-        sphere.render(cam1, tronShader);
+        sphere.render();
+        sphere.render(cam1, tronShader);*/
 
         //mesh.render();
 

@@ -15,7 +15,7 @@ out struct VertexData
 //3.1.3 Farbanpassung
     vec3 normale;
     vec3 position;
-    vec2 tc0; //datentyp?
+    vec2 tc; //datentyp?
 } vertexData;
 
 void main(){
@@ -25,5 +25,5 @@ void main(){
     //3.1.3 Farbanpassung
     vec4 nor = vec4(normale, 1.0f);
     vertexData.normale=(inverse(transpose(view_matrix*model_matrix))*nor).xyz;
-    vertexData.tc0=tc0*tcMultiplier;
+    vertexData.tc=tc0*tcMultiplier;
 }
