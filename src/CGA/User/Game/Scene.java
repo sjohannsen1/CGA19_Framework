@@ -11,6 +11,7 @@ import CGA.User.DataStructures.Texture2D;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -45,7 +46,7 @@ public class Scene {
             simpleShader = new ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl");
             tronShader = new ShaderProgram("assets/shaders/tron_vert.glsl", "assets/shaders/tron_frag.glsl");
 
-            texture=new Texture2D("assets/textures/ground_diff.png", false); //TODO iwie diesen Kack tabulator ignorieren lassen (oder folder umbenennen)
+            texture=new Texture2D("assets/textures/ground_diff.png", false);
 
             /*Transformationen aus 3.1.1
             modelG=new Matrix4f().rotateX(90).scale(0.03f);
@@ -170,6 +171,8 @@ public class Scene {
                // meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),new VertexAttribute[]{aPos,aTex,aNorm}));
             }
             ground = new Renderable(meshes2);
+            //TODO: Daten einfügen für Boden- richtig in Scene?  Material muss rüber
+            glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,512,512,0,GL_RGBA,GL_FLOAT, Data);
 
             //Transformation aus 3.2.3
             /*gound.rotateLocal(90,0,0);
@@ -182,7 +185,6 @@ public class Scene {
             glDisable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
             glCullFace(GL_BACK);
-
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LESS);
             return true;
@@ -228,8 +230,6 @@ public class Scene {
         }if (window.getKeyState(GLFW_KEY_D)){
             sphere.rotateLocal(0f,-dt,0f);
         }
-
-        //TODO: Bewegung mit W A S D  ???
 
     }
 

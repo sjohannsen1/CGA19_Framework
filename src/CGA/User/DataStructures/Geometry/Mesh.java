@@ -1,6 +1,7 @@
 package CGA.User.DataStructures.Geometry;
 
 import CGA.User.DataStructures.ShaderProgram;
+import org.lwjgl.opengl.GL15;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -73,11 +74,12 @@ public class Mesh {
             int emitID=material.emit.getTexID();
             glBindTexture(GL_TEXTURE_2D,emitID);
         }
-        if(material.specular!=null){
-            int specularID= material.specular.getTexID();
-            glBindTexture(GL_TEXTURE_2D,specularID);
+        if(material.specular!=null) {
+            int specularID = material.specular.getTexID();
+            glBindTexture(GL_TEXTURE_2D, specularID);
         }
-        //TODO: IDs ans VAO Binden
+        //TODO: Binding-check!
+        // Material übergeben?
 
         for(int i=0; i<attributes.length;i++){
             glVertexAttribPointer(i,attributes[i].n,attributes[i].type,false,attributes[i].stride,attributes[i].offset);

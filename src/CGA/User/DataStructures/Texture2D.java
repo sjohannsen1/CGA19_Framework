@@ -54,7 +54,6 @@ public class Texture2D implements ITexture{
     public void processTexture(ByteBuffer imageData, int width, int height, boolean genMipMaps) throws Exception {
         texID=glGenTextures();
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,  width, height,0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-        //TODO: Review und ggf vervollständigen
         if(genMipMaps){
             glGenerateMipmap(GL_TEXTURE_2D);
         }
