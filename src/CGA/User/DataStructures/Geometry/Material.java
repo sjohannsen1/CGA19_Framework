@@ -3,10 +3,11 @@ package CGA.User.DataStructures.Geometry;
 import CGA.User.DataStructures.ShaderProgram;
 import CGA.User.DataStructures.Texture2D;
 import org.joml.Vector2f;
+import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengles.GLES20.GL_CLAMP_TO_EDGE;
-import static org.lwjgl.opengles.GLES20.GL_TEXTURE0;
+import static org.lwjgl.opengles.GLES20.*;
 
 public class Material
 {
@@ -37,6 +38,10 @@ public class Material
 
     public void bind(ShaderProgram shaderProgram)
     {
-        shaderProgram.setUniform("tcMultiplier",0); //TODO 0? Da: Startend bei 0 in a4.2
+        this.emit.bind(GL_TEXTURE0);
+        //this.diff.bind(GL_TEXTURE1);
+        //this.specular.bind(GL_TEXTURE2);
+        shaderProgram.setUniform("tcMultiplier", tcMultiplier);
+        shaderProgram.setUniform("tex",0); //TODO 0? Da: Startend bei 0 in a4.2
     }
 }

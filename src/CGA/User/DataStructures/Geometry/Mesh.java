@@ -70,17 +70,16 @@ public class Mesh {
        /* if(material.diff!= null){
             int diffID=material.diff.getTexID();
             //glBindTexture(GL_TEXTURE_2D,diffID);
-        }*/
+        }
         if(material.emit!=null){
             //glBindTexture(GL_TEXTURE_2D,emitID);
             material.emit.bind(GL_TEXTURE0);
         }
-        /*if(material.specular!=null) {
+        if(material.specular!=null) {
             int specularID = material.specular.getTexID();
             //glBindTexture(GL_TEXTURE_2D, specularID);
         }*/
-        //TODO: Binding-check!
-        // Material übergeben?
+
 
         for(int i=0; i<attributes.length;i++){
             glVertexAttribPointer(i,attributes[i].n,attributes[i].type,false,attributes[i].stride,attributes[i].offset);

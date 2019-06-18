@@ -69,6 +69,7 @@ public class Texture2D implements ITexture{
     }
 
     public void bind(int textureUnit) {
+        //glEnable(GL_TEXTURE_2D);
         glActiveTexture(textureUnit);
         glBindTexture(GL_TEXTURE_2D, texID);
     }

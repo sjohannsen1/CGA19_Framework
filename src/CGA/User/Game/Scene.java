@@ -1,6 +1,7 @@
 package CGA.User.Game;
 
 import CGA.Framework.GameWindow;
+import CGA.Framework.ModelLoader;
 import CGA.Framework.OBJLoader;
 import CGA.Framework.Vertex;
 import CGA.User.DataStructures.Camera.TronCam;
@@ -28,7 +29,7 @@ public class Scene {
     private ShaderProgram simpleShader, tronShader;
     private Mesh mesh, mesh2;
     //private Matrix4f modelG, modelS;
-    private Renderable sphere, ground;
+    private Renderable sphere, ground,motorrad;
     private Texture2D tDiff, tEmit, tSpec;
 
     private GameWindow window;
@@ -143,17 +144,19 @@ public class Scene {
 
             //Vertex Attributes der Objekte
             VertexAttribute aPos=new VertexAttribute(3,GL_FLOAT,8*4,0); //position
-            VertexAttribute aCol=new VertexAttribute(2, GL_FLOAT,8*4,3*4);//textur
+            VertexAttribute aTex=new VertexAttribute(2, GL_FLOAT,8*4,3*4);//textur
             VertexAttribute aNorm=new VertexAttribute(3,GL_FLOAT,8*4,5*4);//Normale
-            VertexAttribute aTex= new VertexAttribute(2, GL_UNSIGNED_BYTE, 8*4, 8*4); //Texture
+           // VertexAttribute aTex= new VertexAttribute(2, GL_UNSIGNED_BYTE, 10*4, 8*4); //Texture
 
 
 
-            VertexAttribute[] atArray= new VertexAttribute[]{aPos,aCol,aNorm};
+            VertexAttribute[] atArray= new VertexAttribute[]{aPos,aTex,aNorm};
 
             //Cam
             cam1=new TronCam((float)Math.toRadians(90),16/9f,0.01f,1000);
-            cam1.translateGlobal(deltaPos);
+            cam1.translateGlobal(new Vector3f(2.0f, 2.0f, 4.0f));
+            cam1.rotateLocal(0, (float) Math.toRadians(10), 0);
+
 
             cam1.setUp(new Vector3f(0,1,0));
 
@@ -180,7 +183,7 @@ public class Scene {
             ArrayList<Mesh> meshes2=new ArrayList<>();
 
             for(OBJLoader.OBJMesh objM:objMeshes){
-               meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),new VertexAttribute[]{aPos,aCol,aNorm, aTex}, mGround));
+               meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),atArray,mGround));
             }
             ground = new Renderable(meshes2);
             //TODO: Daten einfügen für Boden- richtig in Scene?  Material muss rüber -> NEIN ist doch schon in Texture2D
@@ -192,6 +195,13 @@ public class Scene {
             //glDeleteBuffers(int bufferID);
 
             //initial opengl state
+
+            //Motorrad
+            motorrad = ModelLoader.loadModel("assets/Light Cycle/Light Cycle/HQ_Movie cycle.obj", (float) Math.toRadians(-90), (float) Math.toRadians(90), 0);
+            motorrad.scaleLocal(new Vector3f(0.8f,0.8f,0.8f));
+            cam1.setParent(motorrad);
+
+
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             glDisable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
@@ -215,8 +225,8 @@ public class Scene {
         /*tronShader.setUniform("model_matrix", modelG, false);
         ground.render();*/
         cam1.bind(tronShader);
-        ground.render(tronShader);
-
+        //ground.render(tronShader);
+        motorrad.render(tronShader);
         //Uniformieren aus 3.1.2
         /*tronShader.setUniform("model_matrix", modelS, false);
         sphere.render();
@@ -230,15 +240,17 @@ public class Scene {
 
     public void update(float dt, float t) {
         if(window.getKeyState(GLFW_KEY_W)){
-            cam1.translateGlobal(new Vector3f(0f,0f,-dt));
+            motorrad.translateGlobal(new Vector3f(0f,0f,-dt));
 
         }if(window.getKeyState(GLFW_KEY_A)){
-            cam1.rotateLocal(0f,dt,0f);
+            motorrad.rotateLocal(0f,dt,0f);
 
         }if(window.getKeyState(GLFW_KEY_S)){
-            cam1.translateGlobal(new Vector3f(0f,0f,dt));
+            motorrad.translateGlobal(new Vector3f(0f,0f,dt));
+
         }if (window.getKeyState(GLFW_KEY_D)){
-            cam1.rotateLocal(0f,-dt,0f);
+            motorrad.rotateLocal(0f,-dt,0f);
+
         }
 
     }

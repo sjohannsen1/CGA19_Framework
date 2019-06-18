@@ -1,6 +1,8 @@
 package CGA.User.DataStructures;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -172,6 +174,7 @@ public class ShaderProgram
         return false;
     }
 
+
     public boolean setUniform(String name, int value){
         if(programID == 0)
             return false;
@@ -179,6 +182,17 @@ public class ShaderProgram
         if(loc != -1)
         {
             glUniform1i(loc,value);
+            return true;
+        }
+        return false;
+    }
+    public boolean setUniform(String name, Vector2f vector){
+        if(programID == 0)
+            return false;
+        int loc = glGetUniformLocation(programID, name);
+        if(loc != -1)
+        {
+            glUniform2fv(loc, vector.get(buffer));
             return true;
         }
         return false;
