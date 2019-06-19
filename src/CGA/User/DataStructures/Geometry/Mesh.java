@@ -96,7 +96,7 @@ public class Mesh {
     /**
      * renders the mesh
      */
-    public void render() {
+    private void render() {
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES,count,GL_UNSIGNED_INT,0);
         glBindVertexArray(0);

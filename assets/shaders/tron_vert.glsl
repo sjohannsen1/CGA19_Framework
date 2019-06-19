@@ -15,7 +15,7 @@ out struct VertexData
 //3.1.3 Farbanpassung
     vec3 normale;
     vec3 position;
-    vec2 tc; //datentyp?
+    vec2 tc;
 } vertexData;
 
 void main(){

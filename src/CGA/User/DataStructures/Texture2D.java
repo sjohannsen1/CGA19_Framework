@@ -53,29 +53,31 @@ public class Texture2D implements ITexture{
 
     public void processTexture(ByteBuffer imageData, int width, int height, boolean genMipMaps) throws Exception {
         texID=glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, texID);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,  width, height,0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
         if(genMipMaps){
             glGenerateMipmap(GL_TEXTURE_2D);
         }
-
+        unbind();
     }
 
     public void setTexParams(int wrapS, int wrapT, int minFilter, int magFilter) throws Exception {
-
+        glBindTexture(GL_TEXTURE_2D, texID);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, wrapS);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
+        unbind();
     }
 
     public void bind(int textureUnit) {
         //glEnable(GL_TEXTURE_2D);
-        glActiveTexture(textureUnit);
+        glActiveTexture(GL_TEXTURE0 + textureUnit);
         glBindTexture(GL_TEXTURE_2D, texID);
     }
 
     public void unbind() {
-        glDeleteTextures(texID);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     public int getTexID() {

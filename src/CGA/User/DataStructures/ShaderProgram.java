@@ -192,7 +192,7 @@ public class ShaderProgram
         int loc = glGetUniformLocation(programID, name);
         if(loc != -1)
         {
-            glUniform2fv(loc, vector.get(buffer));
+            glUniform2f(loc, vector.x, vector.y);
             return true;
         }
         return false;

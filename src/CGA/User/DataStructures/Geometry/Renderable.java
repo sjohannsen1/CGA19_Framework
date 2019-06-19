@@ -44,7 +44,7 @@ public class Renderable extends Transformable implements IRenderable
     {
         for(Mesh m : meshes)
         {
-            m.render();
+           // m.render();
         }
     }
 
@@ -53,14 +53,14 @@ public class Renderable extends Transformable implements IRenderable
         camera.bind(shaderProgram);
         for(Mesh m : meshes)
         {
-            m.render();
+            m.render(shaderProgram);
         }
     }
 
     @Override
     //3.2.3 Implementierung der weiteren Renderfunktion
     public void render(ShaderProgram shaderProgram) {
-        //shaderProgram.setUniform("model_matrix", this.getWorldModelMatrix(), false);
+        shaderProgram.setUniform("model_matrix", this.getWorldModelMatrix(), false);
         for(Mesh m : meshes)
         {
             m.render(shaderProgram);

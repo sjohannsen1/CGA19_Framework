@@ -49,14 +49,14 @@ public class Scene {
             simpleShader = new ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl");
             tronShader = new ShaderProgram("assets/shaders/tron_vert.glsl", "assets/shaders/tron_frag.glsl");
 
-            tDiff =new Texture2D("assets/textures/ground_diff.png", false);
-            tEmit =new Texture2D("assets/textures/ground_emit.png", false);
-            tSpec =new Texture2D("assets/textures/ground_spec.png", false);
+            tDiff =new Texture2D("assets/textures/ground_diff.png", true);
+            tEmit =new Texture2D("assets/textures/ground_emit.png", true);
+            tSpec =new Texture2D("assets/textures/ground_spec.png", true);
 
             Material mGround= new Material(tDiff, tEmit, tSpec, 60.0f, new Vector2f(64.0f, 64.0f));
-            tDiff.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
-            tEmit.setTexParams(GL_REPEAT,GL_CLAMP_TO_EDGE,GL_NEAREST,GL_NEAREST);
-            tSpec.setTexParams(GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE,GL_LINEAR,GL_NEAREST);
+            tDiff.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
+            tEmit.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
+            tSpec.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
 
             /*Transformationen aus 3.1.1
             modelG=new Matrix4f().rotateX(90).scale(0.03f);
@@ -146,7 +146,6 @@ public class Scene {
             VertexAttribute aPos=new VertexAttribute(3,GL_FLOAT,8*4,0); //position
             VertexAttribute aTex=new VertexAttribute(2, GL_FLOAT,8*4,3*4);//textur
             VertexAttribute aNorm=new VertexAttribute(3,GL_FLOAT,8*4,5*4);//Normale
-           // VertexAttribute aTex= new VertexAttribute(2, GL_UNSIGNED_BYTE, 10*4, 8*4); //Texture
 
 
 
@@ -186,7 +185,7 @@ public class Scene {
                meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),atArray,mGround));
             }
             ground = new Renderable(meshes2);
-            //TODO: Daten einfügen für Boden- richtig in Scene?  Material muss rüber -> NEIN ist doch schon in Texture2D
+
 
             //Transformation aus 3.2.3
             /*gound.rotateLocal(90,0,0);
@@ -194,14 +193,14 @@ public class Scene {
 
             //glDeleteBuffers(int bufferID);
 
-            //initial opengl state
+
 
             //Motorrad
             motorrad = ModelLoader.loadModel("assets/Light Cycle/Light Cycle/HQ_Movie cycle.obj", (float) Math.toRadians(-90), (float) Math.toRadians(90), 0);
             motorrad.scaleLocal(new Vector3f(0.8f,0.8f,0.8f));
             cam1.setParent(motorrad);
 
-
+            //initial opengl state
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             glDisable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
@@ -225,7 +224,7 @@ public class Scene {
         /*tronShader.setUniform("model_matrix", modelG, false);
         ground.render();*/
         cam1.bind(tronShader);
-        //ground.render(tronShader);
+        ground.render( tronShader);
         motorrad.render(tronShader);
         //Uniformieren aus 3.1.2
         /*tronShader.setUniform("model_matrix", modelS, false);

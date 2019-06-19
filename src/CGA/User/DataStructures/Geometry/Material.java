@@ -38,10 +38,13 @@ public class Material
 
     public void bind(ShaderProgram shaderProgram)
     {
-        this.emit.bind(GL_TEXTURE0);
-        //this.diff.bind(GL_TEXTURE1);
-        //this.specular.bind(GL_TEXTURE2);
+        this.emit.bind(0);
+        this.diff.bind(1);
+        this.specular.bind(2);
         shaderProgram.setUniform("tcMultiplier", tcMultiplier);
-        shaderProgram.setUniform("tex",0); //TODO 0? Da: Startend bei 0 in a4.2
+        shaderProgram.setUniform("texEmit",0);
+        shaderProgram.setUniform("texDiff",1);
+        shaderProgram.setUniform("texSpec",2);
+        shaderProgram.setUniform("shininess",shininess);
     }
 }
