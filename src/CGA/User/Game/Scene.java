@@ -27,8 +27,6 @@ import static org.lwjgl.opengles.GLES20.GL_FLOAT;
  */
 public class Scene {
     private ShaderProgram simpleShader, tronShader;
-    private Mesh mesh, mesh2;
-    //private Matrix4f modelG, modelS;
     private Renderable sphere, ground,motorrad;
     private Texture2D tDiff, tEmit, tSpec;
 
@@ -58,87 +56,6 @@ public class Scene {
             tEmit.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
             tSpec.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
 
-            /*Transformationen aus 3.1.1
-            modelG=new Matrix4f().rotateX(90).scale(0.03f);
-            modelS=new Matrix4f().scale(0.5f);
-            FloatBuffer vert= BufferUtils.createFloatBuffer(15);
-            vert.put(-0.5f);vert.put(-0.5f);vert.put(0.0f);
-            vert.put(0.5f);vert.put(-0.5f);vert.put(0.0f);
-            vert.put(0.5f);vert.put(0.5f);vert.put(0.0f);
-            vert.put(0.0f);vert.put(1.0f);vert.put(0.0f);
-            vert.put(-0.5f);vert.put(0.5f);vert.put(0.0f);
-
-            int idV= glGenBuffers();
-            glBindBuffer(GL_ARRAY_BUFFER,idV);
-            glBufferData(GL_ARRAY_BUFFER,vert, GL_STATIC_DRAW);
-            glVertexAttribPointer(0,3,GL_FLOAT, false,0,0);
-            //glEnableVertexAttribArray(0);
-
-            FloatBuffer colour= BufferUtils.createFloatBuffer(15);
-            colour.put(0.0f);colour.put(0.0f);colour.put(1.0f);
-            colour.put(0.0f);colour.put(0.0f);colour.put(1.0f);
-            colour.put(0.0f);colour.put(1.0f);colour.put(0.0f);
-            colour.put(1.0f);colour.put(0.0f);colour.put(0.0f);
-            colour.put(0.0f);colour.put(1.0f);colour.put(0.0f);
-
-            int idC= glGenBuffers();
-            glBindBuffer(GL_ARRAY_BUFFER,idC);
-            glBufferData(GL_ARRAY_BUFFER,colour, GL_STATIC_DRAW);
-            glVertexAttribPointer(0,3,GL_FLOAT, false,0,0);
-            //glEnableVertexAttribArray(0);
-
-            IntBuffer pos= BufferUtils.createIntBuffer(9);
-            pos.put(0); pos.put(1); pos.put(2);
-            pos.put(0);pos.put(2); pos.put(4);
-            pos.put(4);pos.put(2);pos.put(3);
-            VertexAttribute v=new VertexAttribute(3, GL_FLOAT, 12,0);*/
-            //Aufgabe 1
-            /*float [] verticesIch =     {
-                    -0.5f,-0.5f,0,    1,0,1,
-                    -0.5f,0,0,        1,0,1,
-                    0,0,0,            1,0,1,
-                    0,0.5f,0,         1,0,0,
-                    -0.5f,0.5f,0,     1,0,0,
-                    -0.5f,1,0,        0,0,1,
-                    0,1,0,            0,0,1,
-                    0,-0.5f,0,        1,0,0,
-                    0.5f,0,0,         1,0,0,
-                    0.25f,0,0,        1,0,0,
-                    0.25f,0.5f,0,     0,0,1,
-                    0.5f,0.5f,0,      1,0,1,
-                    0.5f,1,0,         0,0,1,
-                    0.25f,1,0,        0,0,1
-            };
-
-            int[] indicesIch = {
-                    0,1,2,
-                    2,3,4,
-                    4,5,6,
-                    2,7,8,
-                    8,9,10,
-                    10,8,11,
-                    10,11,13,
-                    11,12,13};
-
-            int[] indexB= new int[]{
-                    0,1,2,
-                    0,2,4,
-                    4,2,3
-            };
-
-            float[] vertices= new float[]{-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-                    0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-                    0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-                    0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                    -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f};
-
-            VertexAttribute[] vertexAttributes= new VertexAttribute[]{new VertexAttribute(3,GL_FLOAT,24,0),
-                    new VertexAttribute(3,GL_FLOAT, 24,12)};
-            //mesh=new Mesh(vertices, indexB,vertexAttributes);
-            mesh=new Mesh(verticesIch,indicesIch,vertexAttributes);
-
-*/
-
 
 
 
@@ -159,22 +76,7 @@ public class Scene {
 
             cam1.setUp(new Vector3f(0,1,0));
 
-            //Sphere
 
-            /*OBJLoader.OBJResult objSphere=OBJLoader.loadOBJ("assets/models/sphere.obj",false,false);
-            ArrayList <OBJLoader.OBJMesh> objMeshes= objSphere.objects.get(0).meshes;
-
-            ArrayList<Mesh> meshes=new ArrayList<>();
-
-            for(OBJLoader.OBJMesh objM:objMeshes){
-                meshes.add(new Mesh(objM.getVertexData(), objM.getIndexData(),atArray));
-            }
-            sphere= new Renderable(meshes);
-            //cam1.setParent(sphere);
-            //Transformation aus 3.2.3
-            //sphere.scaleLocal(new Vector3f(0.5f,0.5f,0.5f));
-            //sphere.translateGlobal(new Vector3f(0.5f, 0f, 0f));
-*/
 
             //Ground
             OBJLoader.OBJResult objGround=OBJLoader.loadOBJ("assets/models/ground.obj",false,false);
@@ -187,11 +89,6 @@ public class Scene {
             ground = new Renderable(meshes2);
 
 
-            //Transformation aus 3.2.3
-            /*gound.rotateLocal(90,0,0);
-            ground.scaleLocal(new Vector3f(0.03f,0.03f,0.03f));*/
-
-            //glDeleteBuffers(int bufferID);
 
 
 
@@ -217,21 +114,13 @@ public class Scene {
     public void render(float dt, float t) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //simpleShader.use();
+
         tronShader.use();
 
-        //Uniformieren aus 3.1.2
-        /*tronShader.setUniform("model_matrix", modelG, false);
-        ground.render();*/
         cam1.bind(tronShader);
         ground.render( tronShader);
         motorrad.render(tronShader);
-        //Uniformieren aus 3.1.2
-        /*tronShader.setUniform("model_matrix", modelS, false);
-        sphere.render();
-        sphere.render(cam1, tronShader);*/
 
-        //mesh.render();
 
 
 
