@@ -1,6 +1,8 @@
 package CGA.User.DataStructures;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -161,16 +163,40 @@ public class ShaderProgram
     }
     //3.1.2 Uniforms (könnte auch void sein, boolean dient nur zum testen)
     public boolean setUniform(String name, Matrix4f matrix, boolean transpose){
-    if(programID == 0)
+        if(programID == 0)
+            return false;
+        int loc = glGetUniformLocation(programID, name);
+        if(loc != -1)
+        {
+            glUniformMatrix4fv(loc, transpose, matrix.get(buffer));
+            return true;
+        }
         return false;
-    int loc = glGetUniformLocation(programID, name);
-    if(loc != -1)
-    {
-        glUniformMatrix4fv(loc, transpose, matrix.get(buffer));
-        return true;
     }
-    return false;
-}
+
+
+    public boolean setUniform(String name, int value){
+        if(programID == 0)
+            return false;
+        int loc = glGetUniformLocation(programID, name);
+        if(loc != -1)
+        {
+            glUniform1i(loc,value);
+            return true;
+        }
+        return false;
+    }
+    public boolean setUniform(String name, Vector2f vector){
+        if(programID == 0)
+            return false;
+        int loc = glGetUniformLocation(programID, name);
+        if(loc != -1)
+        {
+            glUniform2f(loc, vector.x, vector.y);
+            return true;
+        }
+        return false;
+    }
 
     }
 

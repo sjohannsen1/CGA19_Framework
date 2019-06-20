@@ -76,7 +76,7 @@ public class Transformable implements ITransformable {
 
     }
 
-    @Override //TODO getWorldModelMatrix überprüfen
+    @Override
     public Matrix4f getWorldModelMatrix() {
         Matrix4f temp= new Matrix4f();
         if(parent!=null) {

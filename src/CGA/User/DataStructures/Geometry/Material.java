@@ -3,9 +3,11 @@ package CGA.User.DataStructures.Geometry;
 import CGA.User.DataStructures.ShaderProgram;
 import CGA.User.DataStructures.Texture2D;
 import org.joml.Vector2f;
+import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengles.GLES20.GL_CLAMP_TO_EDGE;
+import static org.lwjgl.opengles.GLES20.*;
 
 public class Material
 {
@@ -36,6 +38,13 @@ public class Material
 
     public void bind(ShaderProgram shaderProgram)
     {
-        //TODO: Place your code here
+        this.emit.bind(0);
+        this.diff.bind(1);
+        this.specular.bind(2);
+        shaderProgram.setUniform("tcMultiplier", tcMultiplier);
+        shaderProgram.setUniform("texEmit",0);
+        shaderProgram.setUniform("texDiff",1);
+        shaderProgram.setUniform("texSpec",2);
+        shaderProgram.setUniform("shininess",shininess);
     }
 }

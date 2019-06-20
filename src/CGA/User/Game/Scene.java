@@ -1,19 +1,24 @@
 package CGA.User.Game;
 
 import CGA.Framework.GameWindow;
+import CGA.Framework.ModelLoader;
 import CGA.Framework.OBJLoader;
+import CGA.Framework.Vertex;
 import CGA.User.DataStructures.Camera.TronCam;
+import CGA.User.DataStructures.Geometry.Material;
 import CGA.User.DataStructures.Geometry.Mesh;
 import CGA.User.DataStructures.Geometry.Renderable;
 import CGA.User.DataStructures.Geometry.VertexAttribute;
 import CGA.User.DataStructures.ShaderProgram;
-import org.joml.Matrix4f;
+import CGA.User.DataStructures.Texture2D;
 import org.joml.Vector3f;
+import org.joml.Vector2f;
 
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengles.GLES20.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengles.GLES20.GL_FLOAT;
 
 /**
@@ -23,8 +28,9 @@ import static org.lwjgl.opengles.GLES20.GL_FLOAT;
 public class Scene {
     private ShaderProgram simpleShader, tronShader;
     private Mesh mesh, mesh2;
-    private Matrix4f modelG, modelS;
-    private Renderable sphere, ground;
+    //private Matrix4f modelG, modelS;
+    private Renderable sphere, ground,motorrad;
+    private Texture2D tDiff, tEmit, tSpec;
 
     private GameWindow window;
 
@@ -43,11 +49,19 @@ public class Scene {
             simpleShader = new ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl");
             tronShader = new ShaderProgram("assets/shaders/tron_vert.glsl", "assets/shaders/tron_frag.glsl");
 
-            //Transformationen aus 3.1.1
+            tDiff =new Texture2D("assets/textures/ground_diff.png", true);
+            tEmit =new Texture2D("assets/textures/ground_emit.png", true);
+            tSpec =new Texture2D("assets/textures/ground_spec.png", true);
+
+            Material mGround= new Material(tDiff, tEmit, tSpec, 60.0f, new Vector2f(64.0f, 64.0f));
+            tDiff.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
+            tEmit.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
+            tSpec.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
+
+            /*Transformationen aus 3.1.1
             modelG=new Matrix4f().rotateX(90).scale(0.03f);
             modelS=new Matrix4f().scale(0.5f);
-
-            /*FloatBuffer vert= BufferUtils.createFloatBuffer(15);
+            FloatBuffer vert= BufferUtils.createFloatBuffer(15);
             vert.put(-0.5f);vert.put(-0.5f);vert.put(0.0f);
             vert.put(0.5f);vert.put(-0.5f);vert.put(0.0f);
             vert.put(0.5f);vert.put(0.5f);vert.put(0.0f);
@@ -133,11 +147,15 @@ public class Scene {
             VertexAttribute aTex=new VertexAttribute(2, GL_FLOAT,8*4,3*4);//textur
             VertexAttribute aNorm=new VertexAttribute(3,GL_FLOAT,8*4,5*4);//Normale
 
+
+
             VertexAttribute[] atArray= new VertexAttribute[]{aPos,aTex,aNorm};
 
             //Cam
             cam1=new TronCam((float)Math.toRadians(90),16/9f,0.01f,1000);
-            cam1.translateGlobal(deltaPos);
+            cam1.translateGlobal(new Vector3f(2.0f, 2.0f, 4.0f));
+            cam1.rotateLocal(0, (float) Math.toRadians(10), 0);
+
 
             cam1.setUp(new Vector3f(0,1,0));
 
@@ -157,15 +175,17 @@ public class Scene {
             //sphere.scaleLocal(new Vector3f(0.5f,0.5f,0.5f));
             //sphere.translateGlobal(new Vector3f(0.5f, 0f, 0f));
 */
+
             //Ground
             OBJLoader.OBJResult objGround=OBJLoader.loadOBJ("assets/models/ground.obj",false,false);
             ArrayList <OBJLoader.OBJMesh>objMeshes= objGround.objects.get(0).meshes;
             ArrayList<Mesh> meshes2=new ArrayList<>();
 
             for(OBJLoader.OBJMesh objM:objMeshes){
-                meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),new VertexAttribute[]{aPos,aTex,aNorm}));
+               meshes2.add(new Mesh(objM.getVertexData(), objM.getIndexData(),atArray,mGround));
             }
             ground = new Renderable(meshes2);
+
 
             //Transformation aus 3.2.3
             /*gound.rotateLocal(90,0,0);
@@ -173,12 +193,18 @@ public class Scene {
 
             //glDeleteBuffers(int bufferID);
 
+
+
+            //Motorrad
+            motorrad = ModelLoader.loadModel("assets/Light Cycle/Light Cycle/HQ_Movie cycle.obj", (float) Math.toRadians(-90), (float) Math.toRadians(90), 0);
+            motorrad.scaleLocal(new Vector3f(0.8f,0.8f,0.8f));
+            cam1.setParent(motorrad);
+
             //initial opengl state
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             glDisable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
             glCullFace(GL_BACK);
-
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LESS);
             return true;
@@ -197,14 +223,13 @@ public class Scene {
         //Uniformieren aus 3.1.2
         /*tronShader.setUniform("model_matrix", modelG, false);
         ground.render();*/
-
-        ground.render(cam1,tronShader);
-
+        cam1.bind(tronShader);
+        ground.render( tronShader);
+        motorrad.render(tronShader);
         //Uniformieren aus 3.1.2
         /*tronShader.setUniform("model_matrix", modelS, false);
-        sphere.render();*/
-
-        sphere.render(cam1, tronShader);
+        sphere.render();
+        sphere.render(cam1, tronShader);*/
 
         //mesh.render();
 
@@ -214,18 +239,18 @@ public class Scene {
 
     public void update(float dt, float t) {
         if(window.getKeyState(GLFW_KEY_W)){
-            sphere.translateGlobal(new Vector3f(0f,0f,-dt));
+            motorrad.translateGlobal(new Vector3f(0f,0f,-dt));
 
         }if(window.getKeyState(GLFW_KEY_A)){
-            sphere.rotateLocal(0f,dt,0f);
+            motorrad.rotateLocal(0f,dt,0f);
 
         }if(window.getKeyState(GLFW_KEY_S)){
-            sphere.translateGlobal(new Vector3f(0f,0f,dt));
-        }if (window.getKeyState(GLFW_KEY_D)){
-            sphere.rotateLocal(0f,-dt,0f);
-        }
+            motorrad.translateGlobal(new Vector3f(0f,0f,dt));
 
-        //TODO: Bewegung mit W A S D  ???
+        }if (window.getKeyState(GLFW_KEY_D)){
+            motorrad.rotateLocal(0f,-dt,0f);
+
+        }
 
     }
 
