@@ -30,7 +30,7 @@ public class Scene {
     private ShaderProgram simpleShader, tronShader;
     private Renderable sphere, ground,motorrad;
     private Texture2D tDiff, tEmit, tSpec;
-    private PointLight;
+    private PointLight light;
     private GameWindow window;
 
     public Scene(GameWindow window) {
@@ -57,8 +57,7 @@ public class Scene {
             tEmit.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
             tSpec.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
 
-
-
+            light= new PointLight(deltaPos,new Vector3f(1.0f,0.0f,1.0f));
 
             //Vertex Attributes der Objekte
             VertexAttribute aPos=new VertexAttribute(3,GL_FLOAT,8*4,0); //position
@@ -97,6 +96,7 @@ public class Scene {
             motorrad = ModelLoader.loadModel("assets/Light Cycle/Light Cycle/HQ_Movie cycle.obj", (float) Math.toRadians(-90), (float) Math.toRadians(90), 0);
             motorrad.scaleLocal(new Vector3f(0.8f,0.8f,0.8f));
             cam1.setParent(motorrad);
+            light.setParent(motorrad);
 
             //initial opengl state
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -119,7 +119,9 @@ public class Scene {
         tronShader.use();
 
         cam1.bind(tronShader);
+        light.bind(tronShader, "lightColor");
         ground.render( tronShader);
+
         motorrad.render(tronShader);
 
 

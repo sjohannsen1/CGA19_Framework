@@ -16,11 +16,13 @@ out struct VertexData
     vec3 normale;
     vec3 position;
     vec2 tc;
+    vec3 pos;
 } vertexData;
 
 void main(){
     vec4 pos = proj_matrix*view_matrix*model_matrix * vec4(position, 1.0f);
     gl_Position = pos;
+    vertexData.pos=vec3(model_matrix*vec4(position, 1.0f));
     vertexData.position = pos.xyz;
     //3.1.3 Farbanpassung
     vec4 nor = vec4(normale, 1.0f);

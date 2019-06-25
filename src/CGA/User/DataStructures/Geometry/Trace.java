@@ -344,11 +344,11 @@ public class Trace
 
 
 
-    public boolean checkCollision(Vector3f pos, Vector3f dir){
+    /*public boolean checkCollision(Vector3f pos, Vector3f dir){
 
         //TODO: Place your code here!
 
-    }
+    }*/
 
     public void cleanup()
     {
