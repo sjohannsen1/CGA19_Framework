@@ -9,6 +9,7 @@ import CGA.User.DataStructures.Geometry.Material;
 import CGA.User.DataStructures.Geometry.Mesh;
 import CGA.User.DataStructures.Geometry.Renderable;
 import CGA.User.DataStructures.Geometry.VertexAttribute;
+import CGA.User.DataStructures.Light.PointLight;
 import CGA.User.DataStructures.ShaderProgram;
 import CGA.User.DataStructures.Texture2D;
 import org.joml.Vector3f;
@@ -29,7 +30,7 @@ public class Scene {
     private ShaderProgram simpleShader, tronShader;
     private Renderable sphere, ground,motorrad;
     private Texture2D tDiff, tEmit, tSpec;
-
+    private PointLight;
     private GameWindow window;
 
     public Scene(GameWindow window) {

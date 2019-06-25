@@ -198,6 +198,18 @@ public class ShaderProgram
         return false;
     }
 
+    public boolean setUniform(String name, Vector3f vector){
+        if(programID == 0)
+            return false;
+        int loc = glGetUniformLocation(programID, name);
+        if(loc != -1)
+        {
+            glUniform3f(loc, vector.x, vector.y, vector.z);
+            return true;
+        }
+        return false;
+    }
+
     }
 
 
