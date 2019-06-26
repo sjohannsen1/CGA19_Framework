@@ -57,12 +57,13 @@ public class Scene {
             tEmit.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
             tSpec.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
 
-            light= new PointLight(deltaPos,new Vector3f(1.0f,0.0f,1.0f));
+            light= new PointLight(new Vector3f(),new Vector3f(1.0f,0.0f,1.0f));
+            light.translateGlobal(new Vector3f(1f, 1f,2f));
 
             //Vertex Attributes der Objekte
             VertexAttribute aPos=new VertexAttribute(3,GL_FLOAT,8*4,0); //position
             VertexAttribute aTex=new VertexAttribute(2, GL_FLOAT,8*4,3*4);//textur
-            VertexAttribute aNorm=new VertexAttribute(3,GL_FLOAT,8*4,5*4);//Normale
+            VertexAttribute aNorm=new VertexAttribute(3,GL_FLOAT,8*6,5*4);//Normale
 
 
 
@@ -117,6 +118,7 @@ public class Scene {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         tronShader.use();
+        tronShader.setUniform("viewPos", cam1.getWorldPosition());
 
         cam1.bind(tronShader);
         light.bind(tronShader, "lightColor");
@@ -131,16 +133,16 @@ public class Scene {
 
     public void update(float dt, float t) {
         if(window.getKeyState(GLFW_KEY_W)){
-            motorrad.translateGlobal(new Vector3f(0f,0f,-dt));
+            motorrad.translateLocal(new Vector3f(0f,0f,-dt*10));
 
         }if(window.getKeyState(GLFW_KEY_A)){
-            motorrad.rotateLocal(0f,dt,0f);
+            motorrad.rotateLocal(0f,dt*10,0f);
 
         }if(window.getKeyState(GLFW_KEY_S)){
-            motorrad.translateGlobal(new Vector3f(0f,0f,dt));
+            motorrad.translateLocal(new Vector3f(0f,0f,dt*10));
 
         }if (window.getKeyState(GLFW_KEY_D)){
-            motorrad.rotateLocal(0f,-dt,0f);
+            motorrad.rotateLocal(0f,-dt*10,0f);
 
         }
 
