@@ -10,6 +10,7 @@ uniform mat4 view_matrix;
 uniform mat4 proj_matrix;
 uniform vec2 tcMultiplier;
 uniform vec3 lightPos;
+//TODO: 5.3.3
 
 
 out struct VertexData

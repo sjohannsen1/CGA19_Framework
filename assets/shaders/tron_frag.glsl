@@ -16,9 +16,14 @@ in struct VertexData
 uniform sampler2D texDiff;
 uniform sampler2D texSpec;
 uniform sampler2D texEmit;
+uniform vec3 ambientCol;
 uniform float shininess;
 uniform vec3 lightColor;
 uniform vec3 viewPos;
+uniform float intensity;
+uniform float theta;
+uniform float phi;
+uniform vec3 direction;
 
 //fragment shader output
 out vec4 color;
@@ -26,6 +31,7 @@ out vec4 color;
 
 void main(){
 
+    //TODO Lichtintensität berechnen und mit Color multiplizieren
 
     vec3 norm= normalize(vertexData.normale);
     vec3 lightDir= normalize(vertexData.toLight-vertexData.toCamera);
@@ -34,7 +40,9 @@ void main(){
     vec3 DiffuseTerm = texture(texDiff, vertexData.tc).xyz * lightColor;
     vec3 diffuse=cosa*lightColor;
     color = vec4( DiffuseTerm * cosa, 1.0);
-    color += vec4(texture(texEmit, vertexData.tc).xyz, 0.0);
+
+    vec3 ambientTerm=texture(texEmit, vertexData.tc).xyz*ambientCol;
+    color += vec4(ambientTerm, 0.0);
 
     vec3 viewDir = normalize(vertexData.toCamera);
     vec3 R = normalize(reflect(-lightDir,norm));

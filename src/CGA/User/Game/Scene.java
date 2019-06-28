@@ -10,6 +10,7 @@ import CGA.User.DataStructures.Geometry.Mesh;
 import CGA.User.DataStructures.Geometry.Renderable;
 import CGA.User.DataStructures.Geometry.VertexAttribute;
 import CGA.User.DataStructures.Light.PointLight;
+import CGA.User.DataStructures.Light.SpotLight;
 import CGA.User.DataStructures.ShaderProgram;
 import CGA.User.DataStructures.Texture2D;
 import org.joml.Vector3f;
@@ -30,7 +31,8 @@ public class Scene {
     private ShaderProgram simpleShader, tronShader;
     private Renderable sphere, ground,motorrad;
     private Texture2D tDiff, tEmit, tSpec;
-    private PointLight light;
+    private PointLight point;
+    private SpotLight spot;
     private GameWindow window;
 
     public Scene(GameWindow window) {
@@ -57,8 +59,10 @@ public class Scene {
             tEmit.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
             tSpec.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
 
-            light= new PointLight(new Vector3f(),new Vector3f(1.0f,0.0f,1.0f));
-            light.translateGlobal(new Vector3f(1f, 1f,2f));
+            point= new PointLight(new Vector3f(1f, 1f,2f),new Vector3f(1.0f,0.0f,1.0f));
+
+            spot= new SpotLight(new Vector3f(1f, 1f,2f),deltaPos, new Vector3f(0f,1f,1f),0.5f, (float) Math.toRadians(90));
+            //TODO: Werte checken
 
             //Vertex Attributes der Objekte
             VertexAttribute aPos=new VertexAttribute(3,GL_FLOAT,8*4,0); //position
@@ -97,7 +101,8 @@ public class Scene {
             motorrad = ModelLoader.loadModel("assets/Light Cycle/Light Cycle/HQ_Movie cycle.obj", (float) Math.toRadians(-90), (float) Math.toRadians(90), 0);
             motorrad.scaleLocal(new Vector3f(0.8f,0.8f,0.8f));
             cam1.setParent(motorrad);
-            light.setParent(motorrad);
+            spot.setParent(motorrad);
+            point.setParent(motorrad);
 
             //initial opengl state
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -121,7 +126,8 @@ public class Scene {
         tronShader.setUniform("viewPos", cam1.getWorldPosition());
 
         cam1.bind(tronShader);
-        light.bind(tronShader, "lightColor");
+        point.bind(tronShader, "lightColor");
+        spot.bind(tronShader, "direction");
         ground.render( tronShader);
 
         motorrad.render(tronShader);
