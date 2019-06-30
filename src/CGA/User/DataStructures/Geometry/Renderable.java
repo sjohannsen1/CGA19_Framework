@@ -2,6 +2,7 @@ package CGA.User.DataStructures.Geometry;
 
 import CGA.User.DataStructures.Camera.Camera;
 import CGA.User.DataStructures.ShaderProgram;
+import org.joml.Vector3f;
 
 import java.sql.ShardingKey;
 import java.util.ArrayList;
@@ -61,6 +62,15 @@ public class Renderable extends Transformable implements IRenderable
     //3.2.3 Implementierung der weiteren Renderfunktion
     public void render(ShaderProgram shaderProgram) {
         shaderProgram.setUniform("model_matrix", this.getWorldModelMatrix(), false);
+
+        for(Mesh m : meshes)
+        {
+            m.render(shaderProgram);
+        }
+    }
+    public void render(ShaderProgram shaderProgram, Vector3f ambientCol) {
+        shaderProgram.setUniform("model_matrix", this.getWorldModelMatrix(), false);
+        shaderProgram.setUniform("ambientCol", ambientCol);
         for(Mesh m : meshes)
         {
             m.render(shaderProgram);

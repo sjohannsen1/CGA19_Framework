@@ -101,8 +101,9 @@ public class Scene {
             motorrad = ModelLoader.loadModel("assets/Light Cycle/Light Cycle/HQ_Movie cycle.obj", (float) Math.toRadians(-90), (float) Math.toRadians(90), 0);
             motorrad.scaleLocal(new Vector3f(0.8f,0.8f,0.8f));
             cam1.setParent(motorrad);
-            spot.setParent(motorrad);
+
             point.setParent(motorrad);
+            spot.setParent(motorrad);
 
             //initial opengl state
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -124,13 +125,14 @@ public class Scene {
 
         tronShader.use();
         tronShader.setUniform("viewPos", cam1.getWorldPosition());
-
+        //tronShader.setUniform("ambientCol", new Vector3f(0f,1f,0f));
         cam1.bind(tronShader);
+        //point.setLightColor(new Vector3f((float) Math.sin(t),(float) Math.sin(t),(float) Math.asin(t)));
         point.bind(tronShader, "lightColor");
-        spot.bind(tronShader, "direction");
-        ground.render( tronShader);
-
-        motorrad.render(tronShader);
+        //spot.bind(tronShader, "direction");
+        ground.render( tronShader, new Vector3f(0f,1f,0f));
+//TODO: WTF ist mit den verschiedenen Sinuswerten der Zeit gemeint????
+        motorrad.render(tronShader, new Vector3f((float) Math.sin(t),(float) Math.sin(t),(float) Math.asin(t)));
 
 
 

@@ -5,7 +5,8 @@ import CGA.User.DataStructures.ShaderProgram;
 import org.joml.Vector3f;
 
 public class PointLight extends Transformable implements IPointLight {
-    private Vector3f lightColor, ambientCol;
+    private Vector3f lightColor;
+
     public PointLight(Vector3f position, Vector3f lightColor) {
         translateGlobal(position);
         //TODO Position mit Modelmatrix auf transformable verknüpfen
@@ -16,6 +17,9 @@ public class PointLight extends Transformable implements IPointLight {
 
     @Override
     public void bind(ShaderProgram shaderProgram, String name) {
+        shaderProgram.setUniform("kC", 1.0f);
+        shaderProgram.setUniform("kL", 0.5f);
+        shaderProgram.setUniform("kQ", 0.1f);
         shaderProgram.setUniform(name, lightColor);
         shaderProgram.setUniform("lightPos", getWorldPosition());
 

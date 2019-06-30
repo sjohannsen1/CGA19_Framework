@@ -28,6 +28,9 @@ public class SpotLight extends PointLight implements ISpotLight {
     @Override
     public void bind(ShaderProgram shaderProgram, String name, Matrix4f viewMatrix) {
         super.bind(shaderProgram,"lightColor");
+        shaderProgram.setUniform("kC", 0.5f);
+        shaderProgram.setUniform("kL", 0.05f);
+        shaderProgram.setUniform("kQ", 0.01f);
         shaderProgram.setUniform("view_matrix", viewMatrix, false);
         shaderProgram.setUniform(name, direction);
         shaderProgram.setUniform("theta", theta);

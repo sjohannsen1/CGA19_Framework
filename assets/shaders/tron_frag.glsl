@@ -23,6 +23,9 @@ uniform vec3 viewPos;
 uniform float intensity;
 uniform float theta;
 uniform float phi;
+uniform float kC;
+uniform float kL;
+uniform float kQ;
 uniform vec3 direction;
 
 //fragment shader output
@@ -33,12 +36,17 @@ void main(){
 
     //TODO Lichtintensität berechnen und mit Color multiplizieren
 
+    float distance= length(vertexData.toLight-vertexData.position);
+    float attenuation= 1.0/(kC+kL*distance+kQ*(distance*distance));
+
     vec3 norm= normalize(vertexData.normale);
     vec3 lightDir= normalize(vertexData.toLight-vertexData.toCamera);
 
     float cosa=max(0.0f,dot(norm, lightDir));
     vec3 DiffuseTerm = texture(texDiff, vertexData.tc).xyz * lightColor;
-    vec3 diffuse=cosa*lightColor;
+    DiffuseTerm*=attenuation;
+    //vec3 diffuse=cosa*lightColor;
+
     color = vec4( DiffuseTerm * cosa, 1.0);
 
     vec3 ambientTerm=texture(texEmit, vertexData.tc).xyz*ambientCol;
@@ -49,8 +57,9 @@ void main(){
     float cosBeta = max(0.0, dot(R,viewDir));
     float cosBetak = pow(cosBeta, shininess);
 
-    vec3 SpecularTerm = texture(texSpec, vertexData.tc).xyz * lightColor;
-    color += vec4(SpecularTerm * cosBetak, 0.0);
+    vec3 specularTerm = texture(texSpec, vertexData.tc).xyz * lightColor;
+    specularTerm*=attenuation;
+    color += vec4(specularTerm * cosBetak, 0.0);
 
 /*
     float specularStrength=0.5f;
