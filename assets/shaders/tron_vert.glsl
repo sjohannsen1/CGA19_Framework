@@ -10,6 +10,7 @@ uniform mat4 view_matrix;
 uniform mat4 proj_matrix;
 uniform vec2 tcMultiplier;
 uniform vec3 lightPos;
+uniform vec3 spotPos;
 //TODO: 5.3.3
 
 
@@ -21,6 +22,7 @@ out struct VertexData
     vec2 tc;
     vec3 pos;
     vec3 toLight;
+    vec3 toSpot;
     vec3 toCamera;
 } vertexData;
 
@@ -42,6 +44,7 @@ void main(){
     vec4 lp = view_matrix * vec4(lightPos, 1.0);
     vec4 P = (view_matrix * model_matrix * v);
     vertexData.toLight = (lp - P).xyz;
+    vertexData.toSpot=((view_matrix*vec4(spotPos,1.0))-P).xyz;
 
     //3.1.3 Farbanpassung
     vertexData.tc=tc0*tcMultiplier;

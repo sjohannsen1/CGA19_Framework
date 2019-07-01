@@ -60,8 +60,9 @@ public class Scene {
 
             point= new PointLight(new Vector3f(1f, 1f,2f),new Vector3f(1.0f,0.0f,1.0f));
 
-            spot= new SpotLight(new Vector3f(1f, 1f,2f),new Vector3f(1,1,1), new Vector3f(0f,1f,1f),0.5f, (float) Math.toRadians(90));
-            //TODO: Werte checken
+            spot= new SpotLight(new Vector3f(),new Vector3f(1,1,1), new Vector3f(0f,1f,1f),0.5f, (float) Math.toRadians(90));
+            //TODO: Werte checken -> woher kommen cutOff und outerCutOff? Direction?
+
 
             //Vertex Attributes der Objekte
             VertexAttribute aPos=new VertexAttribute(3,GL_FLOAT,8*4,0); //position
@@ -102,6 +103,10 @@ public class Scene {
             cam1.setParent(motorrad);
 
             point.setParent(motorrad);
+            spot.translateGlobal(motorrad.getPosition());
+            spot.translateGlobal(new Vector3f(0,1,-2));
+            spot.rotateLocal(0,(float)Math.toRadians(45), (float) Math.toRadians(45));
+
             spot.setParent(motorrad);
 
             //initial opengl state
@@ -127,11 +132,11 @@ public class Scene {
         //tronShader.setUniform("ambientCol", new Vector3f(0f,1f,0f));
         cam1.bind(tronShader);
         //point.setLightColor(new Vector3f((float) Math.sin(t),(float) Math.sin(t),(float) Math.asin(t)));
-        point.bind(tronShader, "lightPos");
-        spot.bind(tronShader, "lightPos");
+        //point.bind(tronShader, "lightPos");
+        spot.bind(tronShader, "spotPos");
         ground.render( tronShader, new Vector3f(0f,1f,0f));
 //TODO: WTF ist mit den verschiedenen Sinuswerten der Zeit gemeint????
-        motorrad.render(tronShader, new Vector3f((float) Math.sin(t),(float) Math.sin(t),(float) Math.asin(t)));
+        motorrad.render(tronShader, new Vector3f(0,(float) Math.sin(t),0));
 
 
 
