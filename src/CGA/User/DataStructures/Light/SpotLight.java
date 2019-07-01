@@ -8,7 +8,7 @@ public class SpotLight extends PointLight implements ISpotLight {
     private Vector3f direction;
     private float intesity, theta, phi;
     public SpotLight(Vector3f position, Vector3f lightColor, Vector3f direction, float intesity, float phi) {
-        super(position, lightColor);
+        super(position, lightColor,0.01f, 0.05f, 0.5f);
         this.direction=direction;
         this.theta=direction.dot(super.getPosition().negate().normalize());
         this.phi=phi;
@@ -27,12 +27,9 @@ public class SpotLight extends PointLight implements ISpotLight {
 
     @Override
     public void bind(ShaderProgram shaderProgram, String name, Matrix4f viewMatrix) {
-        super.bind(shaderProgram,"lightColor");
-        shaderProgram.setUniform("kC", 0.5f);
-        shaderProgram.setUniform("kL", 0.05f);
-        shaderProgram.setUniform("kQ", 0.01f);
+        super.bind(shaderProgram,"lightPos");
         shaderProgram.setUniform("view_matrix", viewMatrix, false);
-        shaderProgram.setUniform(name, direction);
+        shaderProgram.setUniform("direction", direction);
         shaderProgram.setUniform("theta", theta);
         shaderProgram.setUniform("phi", phi);
 

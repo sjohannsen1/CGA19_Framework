@@ -29,8 +29,7 @@ import static org.lwjgl.opengles.GLES20.GL_FLOAT;
  */
 public class Scene {
     private ShaderProgram simpleShader, tronShader;
-    private Renderable sphere, ground,motorrad;
-    private Texture2D tDiff, tEmit, tSpec;
+    private Renderable  ground,motorrad;
     private PointLight point;
     private SpotLight spot;
     private GameWindow window;
@@ -50,9 +49,9 @@ public class Scene {
             simpleShader = new ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl");
             tronShader = new ShaderProgram("assets/shaders/tron_vert.glsl", "assets/shaders/tron_frag.glsl");
 
-            tDiff =new Texture2D("assets/textures/ground_diff.png", true);
-            tEmit =new Texture2D("assets/textures/ground_emit.png", true);
-            tSpec =new Texture2D("assets/textures/ground_spec.png", true);
+            Texture2D tDiff =new Texture2D("assets/textures/ground_diff.png", true);
+            Texture2D tEmit =new Texture2D("assets/textures/ground_emit.png", true);
+            Texture2D tSpec =new Texture2D("assets/textures/ground_spec.png", true);
 
             Material mGround= new Material(tDiff, tEmit, tSpec, 60.0f, new Vector2f(64.0f, 64.0f));
             tDiff.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
@@ -61,7 +60,7 @@ public class Scene {
 
             point= new PointLight(new Vector3f(1f, 1f,2f),new Vector3f(1.0f,0.0f,1.0f));
 
-            spot= new SpotLight(new Vector3f(1f, 1f,2f),deltaPos, new Vector3f(0f,1f,1f),0.5f, (float) Math.toRadians(90));
+            spot= new SpotLight(new Vector3f(1f, 1f,2f),new Vector3f(1,1,1), new Vector3f(0f,1f,1f),0.5f, (float) Math.toRadians(90));
             //TODO: Werte checken
 
             //Vertex Attributes der Objekte
@@ -128,8 +127,8 @@ public class Scene {
         //tronShader.setUniform("ambientCol", new Vector3f(0f,1f,0f));
         cam1.bind(tronShader);
         //point.setLightColor(new Vector3f((float) Math.sin(t),(float) Math.sin(t),(float) Math.asin(t)));
-        point.bind(tronShader, "lightColor");
-        //spot.bind(tronShader, "direction");
+        point.bind(tronShader, "lightPos");
+        spot.bind(tronShader, "lightPos");
         ground.render( tronShader, new Vector3f(0f,1f,0f));
 //TODO: WTF ist mit den verschiedenen Sinuswerten der Zeit gemeint????
         motorrad.render(tronShader, new Vector3f((float) Math.sin(t),(float) Math.sin(t),(float) Math.asin(t)));
