@@ -58,7 +58,7 @@ public class Scene {
             tEmit.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
             tSpec.setTexParams(GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR);
 
-            point= new PointLight(/*new Vector3f(1f, 0.2f,2f)*/new Vector3f(),new Vector3f(1.0f,0.5f,1.0f));
+            point= new PointLight(new Vector3f(1f, 0.2f,2f),new Vector3f(0f,0f,1.0f));
 
             spot= new SpotLight(new Vector3f(),new Vector3f(1,1,1), new Vector3f(0f,1f,1f),0.5f, (float) Math.toRadians(30));
             //TODO: Werte checken -> woher kommen cutOff und outerCutOff? Direction?
@@ -100,7 +100,7 @@ public class Scene {
             //Motorrad
             motorrad = ModelLoader.loadModel("assets/Light Cycle/Light Cycle/HQ_Movie cycle.obj", (float) Math.toRadians(-90), (float) Math.toRadians(90), 0);
             motorrad.scaleLocal(new Vector3f(0.8f,0.8f,0.8f));
-            cam1.setParent(motorrad);
+            //cam1.setParent(motorrad);
 
 
             /*point.translateGlobal(motorrad.getPosition());
@@ -137,7 +137,7 @@ public class Scene {
         cam1.bind(tronShader);
         //point.setLightColor(new Vector3f((float) Math.sin(t),(float) Math.sin(t),(float) Math.asin(t)));
         point.bind(tronShader, "lightPos", "lightColor");
-        spot.setLightColor(new Vector3f(0f,1f,0f));
+        spot.setLightColor(new Vector3f(1f,0f,0f));
         spot.bind(tronShader, "spotPos");
         ground.render( tronShader, new Vector3f(0f,1f,0f));
 //TODO: WTF ist mit den verschiedenen Sinuswerten der Zeit gemeint????
@@ -150,22 +150,37 @@ public class Scene {
 
     public void update(float dt, float t) {
         if(window.getKeyState(GLFW_KEY_W)){
-           // motorrad.translateLocal(new Vector3f(0f,0f,-dt*10));
-            cam1.translateLocal(new Vector3f(0f,0f,-dt*10));
+             motorrad.translateLocal(new Vector3f(0f,0f,-dt*10));
 
         }if(window.getKeyState(GLFW_KEY_A)){
-            cam1.rotateLocal(0f,dt*10,0f);
-            //motorrad.rotateLocal(0f,dt*10,0f);
+
+            motorrad.rotateLocal(0f,dt*10,0f);
 
         }if(window.getKeyState(GLFW_KEY_S)){
-            cam1.translateLocal(new Vector3f(0f,0f,dt*10));
-            // motorrad.translateLocal(new Vector3f(0f,0f,dt*10));
+
+             motorrad.translateLocal(new Vector3f(0f,0f,dt*10));
 
         }if (window.getKeyState(GLFW_KEY_D)){
-           cam1.rotateLocal(0f,-dt*10,0f);
-           //motorrad.rotateLocal(0f,-dt*10,0f);
+
+           motorrad.rotateLocal(0f,-dt*10,0f);
 
         }
+        if(window.getKeyState(GLFW_KEY_UP)){
+
+            cam1.translateLocal(new Vector3f(0f,0f,-dt*5));
+
+        }if(window.getKeyState(GLFW_KEY_LEFT)){
+            cam1.rotateLocal(0f,dt*5,0f);
+
+
+        }if(window.getKeyState(GLFW_KEY_DOWN)){
+            cam1.translateLocal(new Vector3f(0f,0f,dt*5));
+
+
+        }if (window.getKeyState(GLFW_KEY_RIGHT)){
+            cam1.rotateLocal(0f,-dt*5,0f);
+
+            }
 
     }
 

@@ -37,13 +37,15 @@ out vec4 color;
 
 void main(){
 
-    //TODO Lightcolor für spot fixen
+    //TODO: Spotlight fixen
 
 
-    float theta = dot(vertexData.toSpot, normalize(-direction));
+    float theta = dot(normalize(vertexData.toSpot), normalize(-vertexData.toCamera));
     if(theta>cutOff){
         float epsilon = (cutOff - outerCutOff);
-        float intens = clamp((theta - outerCutOff) / epsilon, 0.0, 1.0);
+        //vec3 n = normalize(vertexData.normale);
+       // float intens = max(dot(n,normalize(vertexData.toSpot)), 0.0);
+       float intens = clamp((theta - outerCutOff) / epsilon, 0.0, 1.0);
 
 
         float distance= length(vertexData.toSpot-vertexData.position);
