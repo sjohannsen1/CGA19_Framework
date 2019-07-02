@@ -17,7 +17,13 @@ public class SpotLight extends PointLight implements ISpotLight {
 
     @Override
     public void bind(ShaderProgram shaderProgram, String name) {
-        super.bind(shaderProgram, name);
+        super.bind(shaderProgram,name, "spotColor");
+        shaderProgram.setUniform("direction", direction);
+        shaderProgram.setUniform("outerCutOff", (float) Math.cos(gamma));
+        shaderProgram.setUniform("cutOff",(float )Math.cos(phi) );
+        shaderProgram.setUniform("phi", phi);
+
+
     }
 
     @Override
@@ -27,7 +33,7 @@ public class SpotLight extends PointLight implements ISpotLight {
 
     @Override
     public void bind(ShaderProgram shaderProgram, String name, Matrix4f viewMatrix) {
-        super.bind(shaderProgram,"lightPos");
+        super.bind(shaderProgram,name, "spotColor");
         shaderProgram.setUniform("view_matrix", viewMatrix, false);
         shaderProgram.setUniform("direction", direction);
         shaderProgram.setUniform("outerCutOff", (float) Math.cos(gamma));

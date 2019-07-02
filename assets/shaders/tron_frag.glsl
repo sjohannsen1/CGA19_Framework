@@ -20,6 +20,7 @@ uniform sampler2D texEmit;
 uniform vec3 ambientCol;
 uniform float shininess;
 uniform vec3 lightColor;
+uniform vec3 spotColor;
 uniform vec3 viewPos;
 uniform float intensity;
 uniform float cutOff;
@@ -52,7 +53,7 @@ void main(){
         vec3 lightDir= normalize(vertexData.toSpot-vertexData.toCamera);
 
         float cosa=max(0.0f, dot(norm, lightDir));
-        vec3 DiffuseTerm = texture(texDiff, vertexData.tc).xyz * lightColor;
+        vec3 DiffuseTerm = texture(texDiff, vertexData.tc).xyz * spotColor;
         DiffuseTerm *= intens;
         DiffuseTerm*=attenuation;
         //vec3 diffuse=cosa*lightColor;
@@ -67,7 +68,7 @@ void main(){
         float cosBeta = max(0.0, dot(R, viewDir));
         float cosBetak = pow(cosBeta, shininess);
 
-        vec3 specularTerm = texture(texSpec, vertexData.tc).xyz * lightColor;
+        vec3 specularTerm = texture(texSpec, vertexData.tc).xyz * spotColor;
         specularTerm*=intens;
         specularTerm*=attenuation;
         color += vec4(specularTerm * cosBetak, 0.0);
