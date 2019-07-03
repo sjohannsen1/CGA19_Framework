@@ -35,7 +35,7 @@ public class PointLight extends Transformable implements IPointLight {
         shaderProgram.setUniform("lightColor", lightColor);
         shaderProgram.setUniform(name, getWorldPosition());
 
-        //TODO Implementierung überprüfen, lightcolor fixen
+
     }
 
     public void bind(ShaderProgram shaderProgram, String namePosition, String nameColor) {
@@ -45,7 +45,7 @@ public class PointLight extends Transformable implements IPointLight {
         shaderProgram.setUniform(nameColor, lightColor);
         shaderProgram.setUniform(namePosition, getWorldPosition());
 
-        //TODO Implementierung überprüfen, lightcolor fixen
+
     }
 
     @Override
